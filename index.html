@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de Vacinas</title>
+    <!-- Inclui Tailwind CSS para estilização rápida e responsiva -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Define a fonte Inter para todo o corpo do documento */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0f2f5; /* Cor de fundo suave */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh; /* Garante que o corpo ocupe toda a altura da viewport */
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        /* Estilos para o contêiner principal da aplicação */
+        .container {
+            background-color: #ffffff; /* Fundo branco para o cartão */
+            padding: 30px;
+            border-radius: 12px; /* Cantos mais arredondados */
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1); /* Sombra mais pronunciada */
+            width: 100%;
+            max-width: 800px; /* Largura máxima para o contêiner */
+        }
+        /* Estilos para campos de entrada e botões */
+        input[type="date"], button {
+            border-radius: 8px; /* Cantos arredondados */
+            padding: 12px;
+            border: 1px solid #d1d5db; /* Borda sutil */
+            width: 100%;
+            box-sizing: border-box; /* Inclui padding e borda na largura total */
+            margin-bottom: 15px; /* Espaço abaixo dos elementos */
+        }
+        button {
+            background-color: #4f46e5; /* Cor primária do Tailwind (indigo-600) */
+            color: white;
+            font-weight: 600; /* Texto sem negrito */
+            cursor: pointer;
+            transition: background-color 0.3s ease; /* Transição suave para hover */
+        }
+        button:hover {
+            background-color: #4338ca; /* Tom mais escuro ao passar o mouse */
+        }
+        /* Estilos para cabeçalhos de seção */
+        h1, h2 {
+            color: #1f2937; /* Texto escuro */
+            margin-bottom: 20px;
+        }
+        /* Estilos para a mensagem de erro */
+        .error-message {
+            color: #dc2626; /* Vermelho para erros */
+            margin-top: 10px;
+            font-size: 0.9em;
+        }
+        /* Estilos para os cards de vacina por mês */
+        .month-card {
+            background-color: #f9fafb; /* Fundo levemente cinza para os cards */
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05); /* Sombra mais leve */
+            margin-bottom: 15px;
+        }
+        .month-title {
+            font-weight: 700; /* Negrito para o título do mês */
+            color: #374151; /* Cor para o título */
+            margin-bottom: 10px;
+        }
+        .vaccine-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center; /* Alinha verticalmente nome, data e botão */
+            padding: 8px 0;
+            border-bottom: 1px dashed #e5e7eb; /* Linha tracejada */
+        }
+        .vaccine-item:last-child {
+            border-bottom: none; /* Remove a borda do último item */
+        }
+        .vaccine-name {
+            flex-grow: 1; /* Permite que o nome da vacina ocupe o espaço disponível */
+            font-weight: 500;
+            color: #4b5563;
+        }
+        .vaccine-date {
+            color: #6b7280;
+            margin-right: 15px; /* Espaço entre a data e o botão */
+        }
+        .info-btn { /* Alterado de .info-button para .info-btn */
+            background-color: #6366f1; /* Cor para o botão de informação (indigo-500) */
+            color: white;
+            font-size: 0.7rem; /* Fonte menor para o botão (ajustado de 0.75rem) */
+            padding: 4px 8px; /* Padding reduzido para tornar o botão menor */
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            white-space: nowrap; /* Evita que o texto quebre */
+        }
+        .info-btn:hover { /* Alterado de .info-button para .info-btn */
+            background-color: #4f46e5; /* Tom mais escuro ao passar o mouse */
+        }
+
+        /* Estilos para o modal */
+        .modal {
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6); /* Fundo escuro semi-transparente */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-content {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            width: 90%;
+            max-width: 600px;
+            position: relative;
+            animation: fadeIn 0.3s ease-out; /* Animação de entrada */
+        }
+        .close-button {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #9ca3af; /* Cor do ícone de fechar */
+            cursor: pointer;
+            transition: color 0.2s ease;
+        }
+        .close-button:hover {
+            color: #ef4444; /* Vermelho ao passar o mouse */
+        }
+        .modal-title {
+            font-size: 1.75rem; /* Maior para o título do modal */
+            font-weight: bold;
+            color: #1f2937;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        .modal-body {
+            font-size: 1rem;
+            color: #374151;
+            line-height: 1.6;
+            max-height: 70vh; /* Altura máxima para o conteúdo do modal */
+            overflow-y: auto; /* Adiciona scroll se o conteúdo for muito longo */
+        }
+        .loading-spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #3498db;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto; /* Centraliza o spinner */
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body class="bg-gray-100 flex items-center justify-center min-h-screen p-4">
+    <div class="container bg-white p-8 rounded-xl shadow-lg w-full max-w-2xl">
+        <h1 class="text-3xl font-extrabold text-center text-indigo-700 mb-6">
+            🗓️ Calendário de Vacinação Infantil
+        </h1>
+        <p class="text-center text-gray-600 mb-8">
+            Insira a data de nascimento da criança para gerar o calendário de vacinação.
+        </p>
+
+        <div class="mb-6">
+            <label for="birthDate" class="block text-gray-700 text-sm font-bold mb-2">
+                Data de Nascimento:
+            </label>
+            <input type="date" id="birthDate" class="shadow appearance-none border rounded-lg w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:border-indigo-500">
+            <p id="errorMessage" class="error-message hidden">Por favor, insira uma data válida no formato DD/MM/AAAA.</p>
+        </div>
+
+        <button id="calculateBtn" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-4 rounded-lg focus:outline-none focus:shadow-outline transition duration-300 ease-in-out transform hover:scale-105">
+            Calcular Vacinas
+        </button>
+
+        <div id="results" class="mt-8 hidden">
+            <h2 class="text-2xl font-bold text-gray-800 mb-4 text-center">Calendário Personalizado</h2>
+            <div id="vaccineSchedule">
+                <!-- As vacinas calculadas serão inseridas aqui -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para exibição da explicação da vacina -->
+    <div id="infoModal" class="modal hidden">
+        <div class="modal-content">
+            <span class="close-button" id="closeModalBtn">&times;</span>
+            <h3 class="modal-title" id="modalVaccineName"></h3>
+            <div id="modalContent" class="modal-body">
+                <!-- Conteúdo da explicação ou spinner será carregado aqui -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Define os dados das vacinas com base no PDF
+        const vaccineData = [
+            { name: "BCG", recommendedAge: "Ao nascer", maxAge: "Até 4 anos, 11 meses e 29 dias" },
+            { name: "Hepatite B", recommendedAge: "Ao nascer", maxAge: "30 dias" },
+            { name: "Poliomielite 1, 2, 3 (VIP) - 1ª Dose", recommendedAge: "2 meses", maxAge: "Até 4 anos, 11 meses e 29 dias" },
+            { name: "Poliomielite 1, 2, 3 (VIP) - 2ª Dose", recommendedAge: "4 meses", maxAge: "Até 4 anos, 11 meses e 29 dias" },
+            { name: "Poliomielite 1, 2, 3 (VIP) - 3ª Dose", recommendedAge: "6 meses", maxAge: "Até 4 anos, 11 meses e 29 dias" },
+            { name: "Poliomielite 1, 2, 3 (VIP) - Reforço", recommendedAge: "15 meses", maxAge: "Até 4 anos, 11 meses e 29 dias" },
+            { name: "Rotavirus - 1ª Dose", recommendedAge: "2 meses", maxAge: "11 meses e 29 dias" },
+            { name: "Rotavirus - 2ª Dose", recommendedAge: "4 meses", maxAge: "23 meses e 29 dias" },
+            { name: "Pentavalente - 1ª Dose", recommendedAge: "2 meses", maxAge: "Até 6 anos, 11 meses e 29 dias" },
+            { name: "Pentavalente - 2ª Dose", recommendedAge: "4 meses", maxAge: "Até 6 anos, 11 meses e 29 dias" },
+            { name: "Pentavalente - 3ª Dose", recommendedAge: "6 meses", maxAge: "Até 6 anos, 11 meses e 29 dias" },
+            { name: "DTP - 1º Reforço", recommendedAge: "15 meses", maxAge: "Até 6 anos, 11 meses e 29 dias" },
+            { name: "DTP - 2º Reforço", recommendedAge: "4 anos", maxAge: "Até 6 anos, 11 meses e 29 dias" },
+            { name: "Pneumocócica 10-valente - 1ª Dose", recommendedAge: "2 meses", maxAge: "Até 4 anos, 11 meses e 29 dias" },
+            { name: "Pneumocócica 10-valente - 2ª Dose", recommendedAge: "4 meses", maxAge: "Até 4 anos, 11 meses e 29 dias" },
+            { name: "Pneumocócica 10-valente - Reforço", recommendedAge: "12 meses", maxAge: "Até 4 anos, 11 meses e 29 dias" },
+            { name: "Meningocócica C - conjugada - 1ª Dose", recommendedAge: "3 meses", maxAge: "Até 4 anos, 11 meses e 29 dias" },
+            { name: "Meningocócica C - conjugada - 2ª Dose", recommendedAge: "5 meses", maxAge: "Até 4 anos, 11 meses e 29 dias" },
+            { name: "Meningocócica C - conjugada - Reforço", recommendedAge: "12 meses", maxAge: "Até 4 anos, 11 meses e 29 dias" },
+            { name: "Febre Amarela - 1ª Dose", recommendedAge: "9 meses", maxAge: "Até 4 anos, 11 meses e 29 dias" },
+            { name: "Febre Amarela - Reforço", recommendedAge: "4 anos", maxAge: "Até 4 anos, 11 meses e 29 dias" },
+            { name: "Tríplice Viral (SCR) - 1ª Dose", recommendedAge: "12 meses", maxAge: "" }, // No max age in PDF
+            { name: "Tetra Viral (SCRV) - Dose Única", recommendedAge: "15 meses", maxAge: "Até 4 anos, 11 meses e 29 dias" },
+            { name: "Hepatite A - Dose Única", recommendedAge: "15 meses", maxAge: "Até 4 anos, 11 meses e 29 dias" },
+            { name: "Varicela - Dose Única", recommendedAge: "4 anos", maxAge: "Até 6 anos, 11 meses e 29 dias" },
+            { name: "HPV - 1ª Dose", recommendedAge: "9 a 14 anos", maxAge: "14 anos, 11 meses e 29 dias" },
+            { name: "Meningo ACWY - Dose Única", recommendedAge: "11 a 14 anos", maxAge: "14 anos, 11 meses e 29 dias" },
+            { name: "Covid-19 - (Consultar Esquema)", recommendedAge: "6 meses a 4 anos", maxAge: "4 anos 11 meses e 29 dias" },
+            { name: "Influenza", recommendedAge: "A partir de 6 meses de idade (Anual)", maxAge: "" } // No max age in PDF
+        ];
+
+        // Mapeia os elementos do DOM
+        const birthDateInput = document.getElementById('birthDate');
+        const calculateBtn = document.getElementById('calculateBtn');
+        const resultsDiv = document.getElementById('results');
+        const vaccineScheduleDiv = document.getElementById('vaccineSchedule');
+        const errorMessage = document.getElementById('errorMessage');
+
+        // Modal elements
+        const infoModal = document.getElementById('infoModal');
+        const closeModalBtn = document.getElementById('closeModalBtn');
+        const modalVaccineName = document.getElementById('modalVaccineName');
+        const modalContent = document.getElementById('modalContent');
+
+        // Event Listeners
+        calculateBtn.addEventListener('click', calculateVaccineSchedule);
+        closeModalBtn.addEventListener('click', () => {
+            infoModal.classList.add('hidden');
+        });
+        // Close modal if user clicks outside of it
+        window.addEventListener('click', (event) => {
+            if (event.target === infoModal) {
+                infoModal.classList.add('hidden');
+            }
+        });
+
+
+        function calculateVaccineSchedule() {
+            const birthDateStr = birthDateInput.value;
+
+            // Valida a entrada da data
+            if (!birthDateStr) {
+                errorMessage.textContent = "Por favor, insira a data de nascimento da criança.";
+                errorMessage.classList.remove('hidden');
+                resultsDiv.classList.add('hidden');
+                return;
+            }
+
+            const birthDate = new Date(birthDateStr + 'T00:00:00'); // Adiciona T00:00:00 para evitar problemas de fuso horário
+            if (isNaN(birthDate.getTime())) {
+                errorMessage.textContent = "Formato de data inválido. Por favor, use o formato DD/MM/AAAA.";
+                errorMessage.classList.remove('hidden');
+                resultsDiv.classList.add('hidden');
+                return;
+            }
+
+            errorMessage.classList.add('hidden'); // Oculta a mensagem de erro se a data for válida
+            vaccineScheduleDiv.innerHTML = ''; // Limpa os resultados anteriores
+
+            const scheduleByMonth = {}; // Objeto para agrupar vacinas por mês
+
+            vaccineData.forEach(vaccine => {
+                let vaccineDate = null;
+                let ageDescription = vaccine.recommendedAge.toLowerCase();
+
+                if (ageDescription.includes("ao nascer")) {
+                    vaccineDate = new Date(birthDate);
+                } else if (ageDescription.includes("meses")) {
+                    const months = parseInt(ageDescription.split(' ')[0]);
+                    vaccineDate = new Date(birthDate);
+                    vaccineDate.setMonth(birthDate.getMonth() + months);
+                } else if (ageDescription.includes("anos")) {
+                    const years = parseInt(ageDescription.split(' ')[0]);
+                    vaccineDate = new Date(birthDate);
+                    vaccineDate.setFullYear(birthDate.getFullYear() + years);
+                } else if (ageDescription.includes("a partir de 6 meses de idade (anual)")) {
+                    vaccineDate = new Date(birthDate);
+                    vaccineDate.setMonth(birthDate.getMonth() + 6);
+                } else if (ageDescription.includes("9 a 14 anos") || ageDescription.includes("11 a 14 anos")) {
+                    const years = parseInt(ageDescription.split(' ')[0]);
+                    vaccineDate = new Date(birthDate);
+                    vaccineDate.setFullYear(birthDate.getFullYear() + years);
+                } else if (ageDescription.includes("6 meses a 4 anos")) {
+                    const months = 6;
+                    vaccineDate = new Date(birthDate);
+                    vaccineDate.setMonth(birthDate.getMonth() + months);
+                }
+
+
+                // Verifica se a data da vacina é válida e não está no futuro em relação à data atual
+                if (vaccineDate && vaccineDate >= birthDate) {
+                    const monthKey = vaccineDate.toLocaleString('pt-BR', { year: 'numeric', month: 'long' });
+
+                    if (!scheduleByMonth[monthKey]) {
+                        scheduleByMonth[monthKey] = [];
+                    }
+                    scheduleByMonth[monthKey].push({
+                        name: vaccine.name,
+                        date: vaccineDate.toLocaleDateString('pt-BR')
+                    });
+                }
+            });
+
+            // Ordena os meses cronologicamente
+            const sortedMonths = Object.keys(scheduleByMonth).sort((a, b) => {
+                // Adjust for month names that might not be parsed directly by Date constructor across all browsers.
+                // A more robust solution might involve creating a custom month mapping.
+                // For this example, we assume `toLocaleString` output is consistent for comparison.
+                const dateA = new Date(a.replace(' de ', ' 1, ')); // Convert "Maio de 2023" to "Maio 1, 2023" for parsing
+                const dateB = new Date(b.replace(' de ', ' 1, '));
+                return dateA - dateB;
+            });
+
+
+            // Cria e insere os cards de vacina no DOM
+            if (sortedMonths.length > 0) {
+                sortedMonths.forEach(monthKey => {
+                    const monthCard = document.createElement('div');
+                    monthCard.classList.add('month-card');
+
+                    const monthTitle = document.createElement('h3');
+                    monthTitle.classList.add('month-title');
+                    monthTitle.textContent = monthKey;
+                    monthCard.appendChild(monthTitle);
+
+                    scheduleByMonth[monthKey].forEach(item => {
+                        const vaccineItem = document.createElement('div');
+                        vaccineItem.classList.add('vaccine-item');
+
+                        const vaccineName = document.createElement('span');
+                        vaccineName.classList.add('vaccine-name');
+                        vaccineName.textContent = item.name;
+                        vaccineItem.appendChild(vaccineName);
+
+                        const vaccineDate = document.createElement('span');
+                        vaccineDate.classList.add('vaccine-date');
+                        vaccineDate.textContent = item.date;
+                        vaccineItem.appendChild(vaccineDate);
+
+                        // Botão para informações da vacina (Gemini API Call)
+                        const infoButton = document.createElement('button');
+                        infoButton.classList.add('info-btn'); // Alterado para info-btn
+                        infoButton.textContent = '✨ Info';
+                        infoButton.addEventListener('click', () => showVaccineInfo(item.name));
+                        vaccineItem.appendChild(infoButton);
+
+                        monthCard.appendChild(vaccineItem);
+                    });
+                    vaccineScheduleDiv.appendChild(monthCard);
+                });
+                resultsDiv.classList.remove('hidden'); // Mostra a seção de resultados
+            } else {
+                vaccineScheduleDiv.innerHTML = '<p class="text-center text-gray-500">Nenhuma vacina encontrada para a data de nascimento informada ou a criança já passou da idade limite para todas as vacinas.</p>';
+                resultsDiv.classList.remove('hidden');
+            }
+        }
+
+        /**
+         * Exibe o modal com informações da vacina, chamando a API Gemini para obter a explicação.
+         * @param {string} vaccineName O nome da vacina para obter informações.
+         */
+        async function showVaccineInfo(vaccineName) {
+            modalVaccineName.textContent = vaccineName;
+            modalContent.innerHTML = '<div class="loading-spinner"></div><p class="text-center text-gray-500 mt-4">Carregando informações...</p>';
+            infoModal.classList.remove('hidden');
+
+            try {
+                const prompt = `Explique de forma concisa e em português o que é a vacina ${vaccineName}, para que serve, seus benefícios e possíveis efeitos colaterais comuns. Mantenha a resposta com no máximo 200 palavras e em tom informativo e acolhedor para pais.`;
+
+                let chatHistory = [];
+                chatHistory.push({ role: "user", parts: [{ text: prompt }] });
+                const payload = { contents: chatHistory };
+                const apiKey = ""; // Canvas will automatically provide the API key
+                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                const result = await response.json();
+
+                if (result.candidates && result.candidates.length > 0 &&
+                    result.candidates[0].content && result.candidates[0].content.parts &&
+                    result.candidates[0].content.parts.length > 0) {
+                    const text = result.candidates[0].content.parts[0].text;
+                    modalContent.innerHTML = text; // Atualiza o conteúdo do modal com a explicação
+                } else {
+                    modalContent.innerHTML = '<p class="text-red-500">Não foi possível obter informações para esta vacina. Tente novamente mais tarde.</p>';
+                }
+            } catch (error) {
+                console.error("Erro ao chamar a API Gemini:", error);
+                modalContent.innerHTML = '<p class="text-red-500">Ocorreu um erro ao carregar as informações. Verifique sua conexão ou tente novamente.</p>';
+            }
+        }
+    </script>
+</body>
+</html>
+

@@ -216,36 +216,182 @@
 
     <script>
         // Define os dados das vacinas com base no PDF
+        // Adicionada a propriedade 'description' para cada vacina
         const vaccineData = [
-            { name: "BCG", recommendedAge: "Ao nascer", maxAge: "Até 4 anos, 11 meses e 29 dias" },
-            { name: "Hepatite B", recommendedAge: "Ao nascer", maxAge: "30 dias" },
-            { name: "Poliomielite 1, 2, 3 (VIP) - 1ª Dose", recommendedAge: "2 meses", maxAge: "Até 4 anos, 11 meses e 29 dias" },
-            { name: "Poliomielite 1, 2, 3 (VIP) - 2ª Dose", recommendedAge: "4 meses", maxAge: "Até 4 anos, 11 meses e 29 dias" },
-            { name: "Poliomielite 1, 2, 3 (VIP) - 3ª Dose", recommendedAge: "6 meses", maxAge: "Até 4 anos, 11 meses e 29 dias" },
-            { name: "Poliomielite 1, 2, 3 (VIP) - Reforço", recommendedAge: "15 meses", maxAge: "Até 4 anos, 11 meses e 29 dias" },
-            { name: "Rotavirus - 1ª Dose", recommendedAge: "2 meses", maxAge: "11 meses e 29 dias" },
-            { name: "Rotavirus - 2ª Dose", recommendedAge: "4 meses", maxAge: "23 meses e 29 dias" },
-            { name: "Pentavalente - 1ª Dose", recommendedAge: "2 meses", maxAge: "Até 6 anos, 11 meses e 29 dias" },
-            { name: "Pentavalente - 2ª Dose", recommendedAge: "4 meses", maxAge: "Até 6 anos, 11 meses e 29 dias" },
-            { name: "Pentavalente - 3ª Dose", recommendedAge: "6 meses", maxAge: "Até 6 anos, 11 meses e 29 dias" },
-            { name: "DTP - 1º Reforço", recommendedAge: "15 meses", maxAge: "Até 6 anos, 11 meses e 29 dias" },
-            { name: "DTP - 2º Reforço", recommendedAge: "4 anos", maxAge: "Até 6 anos, 11 meses e 29 dias" },
-            { name: "Pneumocócica 10-valente - 1ª Dose", recommendedAge: "2 meses", maxAge: "Até 4 anos, 11 meses e 29 dias" },
-            { name: "Pneumocócica 10-valente - 2ª Dose", recommendedAge: "4 meses", maxAge: "Até 4 anos, 11 meses e 29 dias" },
-            { name: "Pneumocócica 10-valente - Reforço", recommendedAge: "12 meses", maxAge: "Até 4 anos, 11 meses e 29 dias" },
-            { name: "Meningocócica C - conjugada - 1ª Dose", recommendedAge: "3 meses", maxAge: "Até 4 anos, 11 meses e 29 dias" },
-            { name: "Meningocócica C - conjugada - 2ª Dose", recommendedAge: "5 meses", maxAge: "Até 4 anos, 11 meses e 29 dias" },
-            { name: "Meningocócica C - conjugada - Reforço", recommendedAge: "12 meses", maxAge: "Até 4 anos, 11 meses e 29 dias" },
-            { name: "Febre Amarela - 1ª Dose", recommendedAge: "9 meses", maxAge: "Até 4 anos, 11 meses e 29 dias" },
-            { name: "Febre Amarela - Reforço", recommendedAge: "4 anos", maxAge: "Até 4 anos, 11 meses e 29 dias" },
-            { name: "Tríplice Viral (SCR) - 1ª Dose", recommendedAge: "12 meses", maxAge: "" }, // No max age in PDF
-            { name: "Tetra Viral (SCRV) - Dose Única", recommendedAge: "15 meses", maxAge: "Até 4 anos, 11 meses e 29 dias" },
-            { name: "Hepatite A - Dose Única", recommendedAge: "15 meses", maxAge: "Até 4 anos, 11 meses e 29 dias" },
-            { name: "Varicela - Dose Única", recommendedAge: "4 anos", maxAge: "Até 6 anos, 11 meses e 29 dias" },
-            { name: "HPV - 1ª Dose", recommendedAge: "9 a 14 anos", maxAge: "14 anos, 11 meses e 29 dias" },
-            { name: "Meningo ACWY - Dose Única", recommendedAge: "11 a 14 anos", maxAge: "14 anos, 11 meses e 29 dias" },
-            { name: "Covid-19 - (Consultar Esquema)", recommendedAge: "6 meses a 4 anos", maxAge: "4 anos 11 meses e 29 dias" },
-            { name: "Influenza", recommendedAge: "A partir de 6 meses de idade (Anual)", maxAge: "" } // No max age in PDF
+            {
+                name: "BCG",
+                recommendedAge: "Ao nascer",
+                maxAge: "Até 4 anos, 11 meses e 29 dias",
+                description: "A vacina BCG protege contra as formas graves da tuberculose, como a miliar e a meníngea. É uma dose única, aplicada geralmente no braço direito, e é importante para a proteção desde os primeiros dias de vida do bebê. Pode deixar uma pequena cicatriz."
+            },
+            {
+                name: "Hepatite B",
+                recommendedAge: "Ao nascer",
+                maxAge: "30 dias",
+                description: "A primeira dose da vacina contra Hepatite B é dada nas primeiras 12 horas de vida para proteger o recém-nascido da infecção por esse vírus, que pode causar doenças graves no fígado. O esquema completo envolve mais doses em outros meses."
+            },
+            {
+                name: "Poliomielite 1, 2, 3 (VIP) - 1ª Dose",
+                recommendedAge: "2 meses",
+                maxAge: "Até 4 anos, 11 meses e 29 dias",
+                description: "A vacina VIP protege contra a poliomielite (paralisia infantil), uma doença grave que pode causar paralisia permanente. A primeira dose é aplicada aos 2 meses de idade e faz parte de um esquema de várias doses para garantir a imunização completa."
+            },
+            {
+                name: "Poliomielite 1, 2, 3 (VIP) - 2ª Dose",
+                recommendedAge: "4 meses",
+                maxAge: "Até 4 anos, 11 meses e 29 dias",
+                description: "A segunda dose da vacina VIP reforça a proteção contra a poliomielite. É fundamental seguir o calendário para garantir que a criança esteja totalmente protegida contra essa doença que pode ser devastadora."
+            },
+            {
+                name: "Poliomielite 1, 2, 3 (VIP) - 3ª Dose",
+                recommendedAge: "6 meses",
+                maxAge: "Até 4 anos, 11 meses e 29 dias",
+                description: "A terceira dose da vacina VIP completa a série inicial de proteção contra a poliomielite. Essencial para a imunidade de longo prazo."
+            },
+            {
+                name: "Poliomielite 1, 2, 3 (VIP) - Reforço",
+                recommendedAge: "15 meses",
+                maxAge: "Até 4 anos, 11 meses e 29 dias",
+                description: "O primeiro reforço da VIP aumenta ainda mais a proteção contra a poliomielite, garantindo que a imunidade se mantenha forte ao longo do tempo."
+            },
+            {
+                name: "Rotavirus - 1ª Dose",
+                recommendedAge: "2 meses",
+                maxAge: "11 meses e 29 dias",
+                description: "A vacina contra o Rotavírus protege contra as diarreias graves causadas por esse vírus, que são muito comuns em bebês e crianças pequenas. A primeira dose é oral."
+            },
+            {
+                name: "Rotavirus - 2ª Dose",
+                recommendedAge: "4 meses",
+                maxAge: "23 meses e 29 dias",
+                description: "A segunda dose da vacina Rotavírus é crucial para completar a proteção contra as diarreias severas. É importante seguir o prazo máximo para aplicação."
+            },
+            {
+                name: "Pentavalente - 1ª Dose",
+                recommendedAge: "2 meses",
+                maxAge: "Até 6 anos, 11 meses e 29 dias",
+                description: "A vacina Pentavalente protege contra difteria, tétano, coqueluche, Haemophilus influenzae tipo b (Hib) e hepatite B. É uma vacina essencial que oferece proteção ampla com uma única injeção."
+            },
+            {
+                name: "Pentavalente - 2ª Dose",
+                recommendedAge: "4 meses",
+                maxAge: "Até 6 anos, 11 meses e 29 dias",
+                description: "A segunda dose da Pentavalente reforça a imunidade contra cinco doenças importantes, mantendo a criança protegida à medida que cresce."
+            },
+            {
+                name: "Pentavalente - 3ª Dose",
+                recommendedAge: "6 meses",
+                maxAge: "Até 6 anos, 11 meses e 29 dias",
+                description: "A terceira dose da Pentavalente completa o ciclo inicial de proteção, garantindo que a criança tenha uma base sólida de imunidade contra difteria, tétano, coqueluche, Hib e hepatite B."
+            },
+            {
+                name: "DTP - 1º Reforço",
+                recommendedAge: "15 meses",
+                maxAge: "Até 6 anos, 11 meses e 29 dias",
+                description: "O primeiro reforço da DTP (difteria, tétano e coqueluche) é importante para manter a imunidade alta contra essas doenças, especialmente a coqueluche, que é perigosa para bebês."
+            },
+            {
+                name: "DTP - 2º Reforço",
+                recommendedAge: "4 anos",
+                maxAge: "Até 6 anos, 11 meses e 29 dias",
+                description: "O segundo reforço da DTP, administrado por volta dos 4 anos, garante uma proteção duradoura contra difteria, tétano e coqueluche antes da entrada na escola."
+            },
+            {
+                name: "Pneumocócica 10-valente - 1ª Dose",
+                recommendedAge: "2 meses",
+                maxAge: "Até 4 anos, 11 meses e 29 dias",
+                description: "A vacina Pneumocócica protege contra doenças graves causadas pela bactéria Streptococcus pneumoniae, como pneumonia, otite, meningite e outras. A primeira dose é fundamental."
+            },
+            {
+                name: "Pneumocócica 10-valente - 2ª Dose",
+                recommendedAge: "4 meses",
+                maxAge: "Até 4 anos, 11 meses e 29 dias",
+                description: "A segunda dose da Pneumocócica 10-valente fortalece a defesa contra as infecções pneumocócicas, protegendo os pulmões e o cérebro da criança."
+            },
+            {
+                name: "Pneumocócica 10-valente - Reforço",
+                recommendedAge: "12 meses",
+                maxAge: "Até 4 anos, 11 meses e 29 dias",
+                description: "O reforço da Pneumocócica, geralmente aos 12 meses, garante uma proteção contínua e eficaz contra as doenças causadas pelo pneumococo."
+            },
+            {
+                name: "Meningocócica C - conjugada - 1ª Dose",
+                recommendedAge: "3 meses",
+                maxAge: "Até 4 anos, 11 meses e 29 dias",
+                description: "A vacina Meningocócica C protege contra a doença invasiva causada pela Neisseria meningitidis do sorogrupo C, que pode causar meningite. A primeira dose é um passo crucial."
+            },
+            {
+                name: "Meningocócica C - conjugada - 2ª Dose",
+                recommendedAge: "5 meses",
+                maxAge: "Até 4 anos, 11 meses e 29 dias",
+                description: "A segunda dose da Meningocócica C completa a imunização inicial contra a meningite C, oferecendo uma proteção mais robusta para a criança."
+            },
+            {
+                name: "Meningocócica C - conjugada - Reforço",
+                recommendedAge: "12 meses",
+                maxAge: "Até 4 anos, 11 meses e 29 dias",
+                description: "O reforço da Meningocócica C garante a continuidade da proteção contra a doença invasiva, que pode ser muito grave em crianças pequenas."
+            },
+            {
+                name: "Febre Amarela - 1ª Dose",
+                recommendedAge: "9 meses",
+                maxAge: "Até 4 anos, 11 meses e 29 dias",
+                description: "A vacina da Febre Amarela é recomendada para crianças que vivem ou viajarão para áreas de risco. Protege contra a doença transmitida por mosquitos. A primeira dose é dada aos 9 meses."
+            },
+            {
+                name: "Febre Amarela - Reforço",
+                recommendedAge: "4 anos",
+                maxAge: "Até 4 anos, 11 meses e 29 dias",
+                description: "O reforço da vacina de Febre Amarela, aos 4 anos, assegura que a criança mantenha a imunidade contra a doença em áreas endêmicas."
+            },
+            {
+                name: "Tríplice Viral (SCR) - 1ª Dose",
+                recommendedAge: "12 meses",
+                maxAge: "", // No max age in PDF
+                description: "A Tríplice Viral protege contra sarampo, caxumba e rubéola. É uma vacina vital para a saúde pública e individual, aplicada em dose única por volta dos 12 meses de idade."
+            },
+            {
+                name: "Tetra Viral (SCRV) - Dose Única",
+                recommendedAge: "15 meses",
+                maxAge: "Até 4 anos, 11 meses e 29 dias",
+                description: "A Tetra Viral oferece proteção contra sarampo, caxumba, rubéola e varicela (catapora) em uma única dose. Substitui a Tríplice Viral mais a vacina de Varicela isolada para crianças nesta idade."
+            },
+            {
+                name: "Hepatite A - Dose Única",
+                recommendedAge: "15 meses",
+                maxAge: "Até 4 anos, 11 meses e 29 dias",
+                description: "A vacina contra Hepatite A protege contra a infecção do fígado causada pelo vírus da hepatite A, que é transmitido por água e alimentos contaminados. Dose única recomendada aos 15 meses."
+            },
+            {
+                name: "Varicela - Dose Única",
+                recommendedAge: "4 anos",
+                maxAge: "Até 6 anos, 11 meses e 29 dias",
+                description: "A vacina de Varicela (catapora) protege contra a doença. Se a criança já tomou a Tetra Viral, esta dose pode não ser necessária, dependendo do esquema."
+            },
+            {
+                name: "HPV - 1ª Dose",
+                recommendedAge: "9 a 14 anos",
+                maxAge: "14 anos, 11 meses e 29 dias",
+                description: "A vacina HPV protege contra o Papilomavírus Humano, que pode causar câncer de colo de útero e outras lesões. É recomendada para adolescentes e aplicada em duas doses."
+            },
+            {
+                name: "Meningo ACWY - Dose Única",
+                recommendedAge: "11 a 14 anos",
+                maxAge: "14 anos, 11 meses e 29 dias",
+                description: "A vacina Meningo ACWY protege contra diferentes tipos de meningite bacteriana. É uma dose única importante para adolescentes."
+            },
+            {
+                name: "Covid-19 - (Consultar Esquema)",
+                recommendedAge: "6 meses a 4 anos",
+                maxAge: "4 anos 11 meses e 29 dias",
+                description: "A vacina Covid-19 para crianças ajuda a prevenir formas graves da doença. O esquema de doses pode variar, por isso, é fundamental consultar o posto de saúde."
+            },
+            {
+                name: "Influenza",
+                recommendedAge: "A partir de 6 meses de idade (Anual)",
+                maxAge: "", // No max age in PDF
+                description: "A vacina contra a Influenza (gripe) é anual e protege contra os tipos mais comuns do vírus da gripe. É essencial para crianças a partir dos 6 meses para prevenir complicações."
+            }
         ];
 
         // Mapeia os elementos do DOM
@@ -376,9 +522,9 @@
                         vaccineDate.textContent = item.date;
                         vaccineItem.appendChild(vaccineDate);
 
-                        // Botão para informações da vacina (Gemini API Call)
+                        // Botão para informações da vacina
                         const infoButton = document.createElement('button');
-                        infoButton.classList.add('info-btn'); // Alterado para info-btn
+                        infoButton.classList.add('info-btn');
                         infoButton.textContent = '✨ Info';
                         infoButton.addEventListener('click', () => showVaccineInfo(item.name));
                         vaccineItem.appendChild(infoButton);
@@ -395,45 +541,27 @@
         }
 
         /**
-         * Exibe o modal com informações da vacina, chamando a API Gemini para obter a explicação.
+         * Exibe o modal com informações da vacina, usando os dados locais 'vaccineData'.
+         * Não requer chave API ou chamada externa.
          * @param {string} vaccineName O nome da vacina para obter informações.
          */
-        async function showVaccineInfo(vaccineName) {
+        function showVaccineInfo(vaccineName) {
             modalVaccineName.textContent = vaccineName;
+            // Mostra um spinner/mensagem de carregamento brevemente, embora a informação seja instantânea
             modalContent.innerHTML = '<div class="loading-spinner"></div><p class="text-center text-gray-500 mt-4">Carregando informações...</p>';
             infoModal.classList.remove('hidden');
 
-            try {
-                const prompt = `Explique de forma concisa e em português o que é a vacina ${vaccineName}, para que serve, seus benefícios e possíveis efeitos colaterais comuns. Mantenha a resposta com no máximo 200 palavras e em tom informativo e acolhedor para pais.`;
+            // Encontra a vacina nos dados locais
+            const vaccine = vaccineData.find(v => v.name === vaccineName);
 
-                let chatHistory = [];
-                chatHistory.push({ role: "user", parts: [{ text: prompt }] });
-                const payload = { contents: chatHistory };
-                const apiKey = ""; // Canvas will automatically provide the API key
-                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
-
-                const response = await fetch(apiUrl, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload)
-                });
-
-                const result = await response.json();
-
-                if (result.candidates && result.candidates.length > 0 &&
-                    result.candidates[0].content && result.candidates[0].content.parts &&
-                    result.candidates[0].content.parts.length > 0) {
-                    const text = result.candidates[0].content.parts[0].text;
-                    modalContent.innerHTML = text; // Atualiza o conteúdo do modal com a explicação
-                } else {
-                    modalContent.innerHTML = '<p class="text-red-500">Não foi possível obter informações para esta vacina. Tente novamente mais tarde.</p>';
-                }
-            } catch (error) {
-                console.error("Erro ao chamar a API Gemini:", error);
-                modalContent.innerHTML = '<p class="text-red-500">Ocorreu um erro ao carregar as informações. Verifique sua conexão ou tente novamente.</p>';
+            if (vaccine && vaccine.description) {
+                // Se a vacina e sua descrição forem encontradas, exibe a descrição
+                modalContent.innerHTML = vaccine.description;
+            } else {
+                // Se a vacina não for encontrada ou não tiver descrição
+                modalContent.innerHTML = `<p class="text-red-500">Não foi possível obter informações detalhadas para a vacina "${vaccineName}".</p>`;
             }
         }
     </script>
 </body>
 </html>
-

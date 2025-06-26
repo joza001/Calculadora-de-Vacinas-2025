@@ -23,85 +23,97 @@
         .container {
             background-color: #ffffff; /* Fundo branco para o cartão */
             padding: 30px;
-            border-radius: 12px; /* Cantos mais arredondados */
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1); /* Sombra mais pronunciada */
+            border-radius: 16px; /* Cantos mais arredondados */
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15); /* Sombra mais pronunciada e suave */
             width: 100%;
             max-width: 800px; /* Largura máxima para o contêiner */
+            border: 1px solid #e2e8f0; /* Borda sutil */
         }
         /* Estilos para campos de entrada e botões */
         input[type="date"], button {
-            border-radius: 8px; /* Cantos arredondados */
-            padding: 12px;
-            border: 1px solid #d1d5db; /* Borda sutil */
+            border-radius: 10px; /* Cantos mais arredondados */
+            padding: 14px; /* Aumenta o padding */
+            border: 1px solid #cbd5e1; /* Borda um pouco mais visível */
             width: 100%;
             box-sizing: border-box; /* Inclui padding e borda na largura total */
-            margin-bottom: 15px; /* Espaço abaixo dos elementos */
+            margin-bottom: 18px; /* Espaço abaixo dos elementos */
+            font-size: 1.05rem; /* Aumenta um pouco a fonte */
         }
         button {
-            background-color: #4f46e5; /* Cor primária do Tailwind (indigo-600) */
+            background-color: #6366f1; /* Cor primária do Tailwind (indigo-500) */
             color: white;
-            font-weight: 600; /* Texto sem negrito */
+            font-weight: 700; /* Texto mais negrito */
             cursor: pointer;
-            transition: background-color 0.3s ease; /* Transição suave para hover */
+            transition: background-color 0.3s ease, transform 0.2s ease; /* Transição suave para hover e scale */
+            box-shadow: 0 4px 10px rgba(99, 102, 241, 0.3); /* Sombra para o botão */
         }
         button:hover {
-            background-color: #4338ca; /* Tom mais escuro ao passar o mouse */
+            background-color: #4f46e5; /* Tom mais escuro ao passar o mouse */
+            transform: translateY(-2px); /* Efeito de "levantar" */
         }
         /* Estilos para cabeçalhos de seção */
         h1, h2 {
-            color: #1f2937; /* Texto escuro */
-            margin-bottom: 20px;
+            color: #1a202c; /* Texto mais escuro */
+            margin-bottom: 25px; /* Mais espaço */
+            font-weight: 800; /* Mais negrito para títulos */
         }
         /* Estilos para a mensagem de erro */
         .error-message {
-            color: #dc2626; /* Vermelho para erros */
+            color: #ef4444; /* Vermelho mais vibrante para erros */
             margin-top: 10px;
-            font-size: 0.9em;
+            font-size: 0.95em;
+            font-weight: 500;
         }
         /* Estilos para os cards de vacina por mês */
         .month-card {
-            background-color: #f9fafb; /* Fundo levemente cinza para os cards */
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05); /* Sombra mais leve */
-            margin-bottom: 15px;
+            background-color: #fdfefe; /* Fundo quase branco para os cards */
+            padding: 25px; /* Aumenta o padding */
+            border-radius: 12px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08); /* Sombra mais visível */
+            margin-bottom: 20px; /* Mais espaço entre os cards */
+            border: 1px solid #e2e8f0; /* Borda sutil */
         }
         .month-title {
-            font-weight: 700; /* Negrito para o título do mês */
-            color: #374151; /* Cor para o título */
-            margin-bottom: 10px;
+            font-weight: 800; /* Mais negrito para o título do mês */
+            color: #2d3748; /* Cor mais escura para o título */
+            margin-bottom: 12px; /* Mais espaço */
+            font-size: 1.35rem; /* Aumenta um pouco o tamanho */
         }
         .vaccine-item {
             display: flex;
             justify-content: space-between;
             align-items: center; /* Alinha verticalmente nome, data e botão */
-            padding: 8px 0;
-            border-bottom: 1px dashed #e5e7eb; /* Linha tracejada */
+            padding: 10px 0; /* Aumenta o padding */
+            border-bottom: 1px solid #e2e8f0; /* Linha sólida mais suave */
+            font-size: 0.95rem; /* Ajusta o tamanho da fonte */
         }
         .vaccine-item:last-child {
             border-bottom: none; /* Remove a borda do último item */
         }
         .vaccine-name {
             flex-grow: 1; /* Permite que o nome da vacina ocupe o espaço disponível */
-            font-weight: 500;
-            color: #4b5563;
+            font-weight: 600; /* Um pouco mais negrito */
+            color: #4a5568;
         }
         .vaccine-date {
-            color: #6b7280;
-            margin-right: 15px; /* Espaço entre a data e o botão */
+            color: #718096;
+            margin-right: 20px; /* Mais espaço entre a data e o botão */
+            font-weight: 500;
         }
-        .info-btn { /* Alterado de .info-button para .info-btn */
-            background-color: #6366f1; /* Cor para o botão de informação (indigo-500) */
+        .info-btn {
+            background-color: #4c51bf; /* Cor ligeiramente mais escura para o info-btn */
             color: white;
-            font-size: 0.7rem; /* Fonte menor para o botão (ajustado de 0.75rem) */
-            padding: 4px 8px; /* Padding reduzido para tornar o botão menor */
-            border-radius: 6px;
+            font-size: 0.75rem; /* Fonte um pouco maior */
+            padding: 6px 12px; /* Padding ajustado */
+            border-radius: 8px; /* Cantos mais arredondados */
             cursor: pointer;
-            transition: background-color 0.3s ease;
-            white-space: nowrap; /* Evita que o texto quebre */
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            white-space: nowrap;
+            box-shadow: 0 2px 5px rgba(76, 81, 191, 0.2); /* Sombra para o info-btn */
         }
-        .info-btn:hover { /* Alterado de .info-button para .info-btn */
-            background-color: #4f46e5; /* Tom mais escuro ao passar o mouse */
+        .info-btn:hover {
+            background-color: #3e4491; /* Tom mais escuro ao passar o mouse */
+            transform: translateY(-1px);
         }
 
         /* Estilos para o modal */
@@ -112,56 +124,72 @@
             top: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0, 0, 0, 0.6); /* Fundo escuro semi-transparente */
+            background-color: rgba(0, 0, 0, 0.7); /* Fundo mais escuro */
             display: flex;
             justify-content: center;
             align-items: center;
+            opacity: 0; /* Inicialmente oculto */
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+        .modal.visible {
+            opacity: 1;
+            visibility: visible;
         }
         .modal-content {
             background-color: #fff;
-            padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            padding: 35px; /* Aumenta o padding */
+            border-radius: 16px; /* Cantos mais arredondados */
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3); /* Sombra mais profunda */
             width: 90%;
-            max-width: 600px;
+            max-width: 650px; /* Aumenta um pouco a largura máxima */
             position: relative;
-            animation: fadeIn 0.3s ease-out; /* Animação de entrada */
+            transform: translateY(-30px); /* Começa um pouco acima */
+            transition: transform 0.3s ease-out;
+        }
+        .modal.visible .modal-content {
+            transform: translateY(0); /* Desliza para a posição final */
         }
         .close-button {
             position: absolute;
-            top: 15px;
-            right: 15px;
-            font-size: 1.8rem;
+            top: 18px; /* Ajusta posição */
+            right: 18px; /* Ajusta posição */
+            font-size: 2rem; /* Maior */
             font-weight: bold;
-            color: #9ca3af; /* Cor do ícone de fechar */
+            color: #a0aec0; /* Cor mais suave */
             cursor: pointer;
-            transition: color 0.2s ease;
+            transition: color 0.2s ease, transform 0.2s ease;
         }
         .close-button:hover {
-            color: #ef4444; /* Vermelho ao passar o mouse */
+            color: #e53e3e; /* Vermelho mais forte */
+            transform: rotate(90deg); /* Pequena rotação no hover */
         }
         .modal-title {
-            font-size: 1.75rem; /* Maior para o título do modal */
+            font-size: 2rem; /* Maior para o título do modal */
             font-weight: bold;
-            color: #1f2937;
-            margin-bottom: 15px;
+            color: #1a202c;
+            margin-bottom: 20px; /* Mais espaço */
             text-align: center;
         }
         .modal-body {
-            font-size: 1rem;
-            color: #374151;
-            line-height: 1.6;
-            max-height: 70vh; /* Altura máxima para o conteúdo do modal */
+            font-size: 1.05rem; /* Fonte um pouco maior */
+            color: #2d3748;
+            line-height: 1.7; /* Mais espaçamento entre linhas */
+            max-height: 60vh; /* Ajusta altura máxima */
             overflow-y: auto; /* Adiciona scroll se o conteúdo for muito longo */
+            padding-right: 10px; /* Espaço para a barra de rolagem */
+        }
+        .modal-body p {
+            margin-bottom: 10px; /* Espaço entre parágrafos no modal */
         }
         .loading-spinner {
-            border: 4px solid #f3f3f3;
-            border-top: 4px solid #3498db;
+            border: 4px solid #e2e8f0;
+            border-top: 4px solid #4299e1; /* Azul mais vibrante */
             border-radius: 50%;
-            width: 30px;
-            height: 30px;
+            width: 35px; /* Maior */
+            height: 35px; /* Maior */
             animation: spin 1s linear infinite;
-            margin: 20px auto; /* Centraliza o spinner */
+            margin: 25px auto; /* Centraliza o spinner */
         }
 
         @keyframes spin {
@@ -171,6 +199,41 @@
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(-20px); }
             to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Estilos para as novas seções de rodapé */
+        .footer-section {
+            margin-top: 30px;
+            padding-top: 25px;
+            border-top: 1px solid #e2e8f0;
+            color: #4a5568;
+            font-size: 0.9rem;
+            text-align: center;
+        }
+        .footer-section h3 {
+            font-weight: 700;
+            color: #2d3748;
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
+        .footer-section ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: inline-block; /* Para centralizar a lista */
+        }
+        .footer-section li {
+            margin-bottom: 5px;
+        }
+        .ufma-logo {
+            margin-top: 20px;
+            max-width: 150px; /* Tamanho do logo */
+            height: auto;
+            display: block; /* Para permitir margin: auto para centralizar */
+            margin-left: auto;
+            margin-right: auto;
+            border-radius: 50%; /* Opcional: se quiser bordas arredondadas no logo */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra para o logo */
         }
     </style>
 </head>
@@ -201,6 +264,38 @@
                 <!-- As vacinas calculadas serão inseridas aqui -->
             </div>
         </div>
+
+        <!-- Seção de Referência -->
+        <div class="footer-section">
+            <h3>Referências:</h3>
+            <p>Instrução Normativa - Calendário Nacional de Vacinação 2025</p>
+        </div>
+
+        <!-- Seção de Créditos do Projeto -->
+        <div class="footer-section mt-6">
+            <h3>Um projeto da disciplina Eixo Integrador:</h3>
+            <p class="mb-2">Discentes do curso de Medicina - Campus Pinheiro. Ano: 2025</p>
+            <ul>
+                <li>ALLANA REGINA FRANCO DE SA RIBEIRO</li>
+                <li>CIBELE FRANCISCA DE OLIVEIRA ALMEIDA</li>
+                <li>DANILO ADELSON REIS MOREIRA LIMA GONCALVES</li>
+                <li>EDUARDA PINHEIRO COELHO</li>
+                <li>ELAINE SOUSA BENICIO</li>
+                <li>GABRIEL FERNANDES JOSINO</li>
+                <li>JOZADAQUE TEIXEIRA DA SILVA</li>
+                <li>LIVIA DOS SANTOS RODRIGUES</li>
+                <li>MARCUS TULLIUS BARBOSA SEVERIO DE OLIVEIRA</li>
+                <li>MARIA LIVIA OLIVEIRA DA SILVA</li>
+                <li>MARIANA DOURADO SANTIAGO</li>
+                <li>MYRELE DOS SANTOS ELOUF SIMAO</li>
+                <li>PAULO VITOR DOS SANTOS RIBEIRO</li>
+            </ul>
+            <h3 class="mt-6">Orientadora:</h3>
+            <p>Prof. Dra. Karla Janilee de Souza Penha</p>
+            <!-- Logo da UFMA adicionado aqui -->
+            <img src="image.jpg" alt="Logo da UFMA" class="ufma-logo">
+        </div>
+
     </div>
 
     <!-- Modal para exibição da explicação da vacina -->
@@ -410,11 +505,13 @@
         // Event Listeners
         calculateBtn.addEventListener('click', calculateVaccineSchedule);
         closeModalBtn.addEventListener('click', () => {
-            infoModal.classList.add('hidden');
+            infoModal.classList.remove('visible'); // Remove a classe 'visible' para ocultar com transição
+            infoModal.classList.add('hidden'); // Adiciona 'hidden' após a transição
         });
         // Close modal if user clicks outside of it
         window.addEventListener('click', (event) => {
             if (event.target === infoModal) {
+                infoModal.classList.remove('visible');
                 infoModal.classList.add('hidden');
             }
         });
@@ -549,7 +646,9 @@
             modalVaccineName.textContent = vaccineName;
             // Mostra um spinner/mensagem de carregamento brevemente, embora a informação seja instantânea
             modalContent.innerHTML = '<div class="loading-spinner"></div><p class="text-center text-gray-500 mt-4">Carregando informações...</p>';
+            infoModal.classList.add('visible'); // Adiciona a classe 'visible' para iniciar a transição
             infoModal.classList.remove('hidden');
+
 
             // Encontra a vacina nos dados locais
             const vaccine = vaccineData.find(v => v.name === vaccineName);

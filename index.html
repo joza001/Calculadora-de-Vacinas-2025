@@ -310,8 +310,39 @@
     </div>
 
     <script>
+        // Função auxiliar para converter a idade recomendada em um valor numérico para ordenação (em dias)
+        function convertAgeToDays(ageString) {
+            ageString = ageString.toLowerCase();
+            if (ageString.includes("ao nascer")) return 0;
+            if (ageString.includes("meses")) {
+                const months = parseInt(ageString.split(' ')[0]);
+                return months * 30; // Aproximação: 1 mês = 30 dias
+            }
+            if (ageString.includes("anos")) {
+                const years = parseInt(ageString.split(' ')[0]);
+                return years * 365; // Aproximação: 1 ano = 365 dias
+            }
+            // Lida com intervalos como "9 a 14 anos" pegando o início do intervalo
+            if (ageString.includes("a")) {
+                const parts = ageString.split(' ');
+                const minAge = parseInt(parts[0]);
+                if (ageString.includes("meses")) return minAge * 30;
+                if (ageString.includes("anos")) return minAge * 365;
+            }
+            // Para casos específicos como "a partir de 6 meses de idade (anual)"
+            if (ageString.includes("a partir de 6 meses de idade (anual)")) {
+                return 6 * 30; // 6 meses
+            }
+            // Para casos específicos como "6 meses a 4 anos" (pega o início para ordenação)
+            if (ageString.includes("6 meses a 4 anos")) {
+                return 6 * 30;
+            }
+            return Infinity; // Coloca idades não reconhecidas no final
+        }
+
         // Define os dados das vacinas com base no PDF
         // Adicionada a propriedade 'description' para cada vacina
+        // As vacinas serão ordenadas por 'recommendedAge' (idade recomendada)
         const vaccineData = [
             {
                 name: "BCG",
@@ -332,34 +363,10 @@
                 description: "A vacina VIP protege contra a poliomielite (paralisia infantil), uma doença grave que pode causar paralisia permanente. A primeira dose é aplicada aos 2 meses de idade e faz parte de um esquema de várias doses para garantir a imunização completa."
             },
             {
-                name: "Poliomielite 1, 2, 3 (VIP) - 2ª Dose",
-                recommendedAge: "4 meses",
-                maxAge: "Até 4 anos, 11 meses e 29 dias",
-                description: "A segunda dose da vacina VIP reforça a proteção contra a poliomielite. É fundamental seguir o calendário para garantir que a criança esteja totalmente protegida contra essa doença que pode ser devastadora."
-            },
-            {
-                name: "Poliomielite 1, 2, 3 (VIP) - 3ª Dose",
-                recommendedAge: "6 meses",
-                maxAge: "Até 4 anos, 11 meses e 29 dias",
-                description: "A terceira dose da vacina VIP completa a série inicial de proteção contra a poliomielite. Essencial para a imunidade de longo prazo."
-            },
-            {
-                name: "Poliomielite 1, 2, 3 (VIP) - Reforço",
-                recommendedAge: "15 meses",
-                maxAge: "Até 4 anos, 11 meses e 29 dias",
-                description: "O primeiro reforço da VIP aumenta ainda mais a proteção contra a poliomielite, garantindo que a imunidade se mantenha forte ao longo do tempo."
-            },
-            {
                 name: "Rotavirus - 1ª Dose",
                 recommendedAge: "2 meses",
                 maxAge: "11 meses e 29 dias",
                 description: "A vacina contra o Rotavírus protege contra as diarreias graves causadas por esse vírus, que são muito comuns em bebês e crianças pequenas. A primeira dose é oral."
-            },
-            {
-                name: "Rotavirus - 2ª Dose",
-                recommendedAge: "4 meses",
-                maxAge: "23 meses e 29 dias",
-                description: "A segunda dose da vacina Rotavírus é crucial para completar a proteção contra as diarreias severas. É importante seguir o prazo máximo para aplicação."
             },
             {
                 name: "Pentavalente - 1ª Dose",
@@ -368,46 +375,10 @@
                 description: "A vacina Pentavalente protege contra difteria, tétano, coqueluche, Haemophilus influenzae tipo b (Hib) e hepatite B. É uma vacina essencial que oferece proteção ampla com uma única injeção."
             },
             {
-                name: "Pentavalente - 2ª Dose",
-                recommendedAge: "4 meses",
-                maxAge: "Até 6 anos, 11 meses e 29 dias",
-                description: "A segunda dose da Pentavalente reforça a imunidade contra cinco doenças importantes, mantendo a criança protegida à medida que cresce."
-            },
-            {
-                name: "Pentavalente - 3ª Dose",
-                recommendedAge: "6 meses",
-                maxAge: "Até 6 anos, 11 meses e 29 dias",
-                description: "A terceira dose da Pentavalente completa o ciclo inicial de proteção, garantindo que a criança tenha uma base sólida de imunidade contra difteria, tétano, coqueluche, Hib e hepatite B."
-            },
-            {
-                name: "DTP - 1º Reforço",
-                recommendedAge: "15 meses",
-                maxAge: "Até 6 anos, 11 meses e 29 dias",
-                description: "O primeiro reforço da DTP (difteria, tétano e coqueluche) é importante para manter a imunidade alta contra essas doenças, especialmente a coqueluche, que é perigosa para bebês."
-            },
-            {
-                name: "DTP - 2º Reforço",
-                recommendedAge: "4 anos",
-                maxAge: "Até 6 anos, 11 meses e 29 dias",
-                description: "O segundo reforço da DTP, administrado por volta dos 4 anos, garante uma proteção duradoura contra difteria, tétano e coqueluche antes da entrada na escola."
-            },
-            {
                 name: "Pneumocócica 10-valente - 1ª Dose",
                 recommendedAge: "2 meses",
                 maxAge: "Até 4 anos, 11 meses e 29 dias",
                 description: "A vacina Pneumocócica protege contra doenças graves causadas pela bactéria Streptococcus pneumoniae, como pneumonia, otite, meningite e outras. A primeira dose é fundamental."
-            },
-            {
-                name: "Pneumocócica 10-valente - 2ª Dose",
-                recommendedAge: "4 meses",
-                maxAge: "Até 4 anos, 11 meses e 29 dias",
-                description: "A segunda dose da Pneumocócica 10-valente fortalece a defesa contra as infecções pneumocócicas, protegendo os pulmões e o cérebro da criança."
-            },
-            {
-                name: "Pneumocócica 10-valente - Reforço",
-                recommendedAge: "12 meses",
-                maxAge: "Até 4 anos, 11 meses e 29 dias",
-                description: "O reforço da Pneumocócica, geralmente aos 12 meses, garante uma proteção contínua e eficaz contra as doenças causadas pelo pneumococo."
             },
             {
                 name: "Meningocócica C - conjugada - 1ª Dose",
@@ -416,16 +387,52 @@
                 description: "A vacina Meningocócica C protege contra a doença invasiva causada pela Neisseria meningitidis do sorogrupo C, que pode causar meningite. A primeira dose é um passo crucial."
             },
             {
+                name: "Poliomielite 1, 2, 3 (VIP) - 2ª Dose",
+                recommendedAge: "4 meses",
+                maxAge: "Até 4 anos, 11 meses e 29 dias",
+                description: "A segunda dose da vacina VIP reforça a proteção contra a poliomielite. É fundamental seguir o calendário para garantir que a criança esteja totalmente protegida contra essa doença que pode ser devastadora."
+            },
+            {
+                name: "Rotavirus - 2ª Dose",
+                recommendedAge: "4 meses",
+                maxAge: "23 meses e 29 dias",
+                description: "A segunda dose da vacina Rotavírus é crucial para completar a proteção contra as diarreias severas. É importante seguir o prazo máximo para aplicação."
+            },
+            {
+                name: "Pentavalente - 2ª Dose",
+                recommendedAge: "4 meses",
+                maxAge: "Até 6 anos, 11 meses e 29 dias",
+                description: "A segunda dose da Pentavalente reforça a imunidade contra cinco doenças importantes, mantendo a criança protegida à medida que cresce."
+            },
+            {
+                name: "Pneumocócica 10-valente - 2ª Dose",
+                recommendedAge: "4 meses",
+                maxAge: "Até 4 anos, 11 meses e 29 dias",
+                description: "A segunda dose da Pneumocócica 10-valente fortalece a defesa contra as infecções pneumocócicas, protegendo os pulmões e o cérebro da criança."
+            },
+            {
                 name: "Meningocócica C - conjugada - 2ª Dose",
                 recommendedAge: "5 meses",
                 maxAge: "Até 4 anos, 11 meses e 29 dias",
                 description: "A segunda dose da Meningocócica C completa a imunização inicial contra a meningite C, oferecendo uma proteção mais robusta para a criança."
             },
             {
-                name: "Meningocócica C - conjugada - Reforço",
-                recommendedAge: "12 meses",
+                name: "Poliomielite 1, 2, 3 (VIP) - 3ª Dose",
+                recommendedAge: "6 meses",
                 maxAge: "Até 4 anos, 11 meses e 29 dias",
-                description: "O reforço da Meningocócica C garante a continuidade da proteção contra a doença invasiva, que pode ser muito grave em crianças pequenas."
+                description: "A terceira dose da vacina VIP completa a série inicial de proteção contra a poliomielite. Essencial para a imunidade de longo prazo."
+            },
+            {
+                name: "Pentavalente - 3ª Dose",
+                recommendedAge: "6 meses",
+                maxAge: "Até 6 anos, 11 meses e 29 dias",
+                description: "A terceira dose da Pentavalente completa o ciclo inicial de proteção, garantindo que a criança tenha uma base sólida de imunidade contra difteria, tétano, coqueluche, Hib e hepatite B."
+            },
+            {
+                name: "Influenza",
+                recommendedAge: "A partir de 6 meses de idade (Anual)",
+                maxAge: "", // No max age in PDF
+                description: "A vacina contra a Influenza (gripe) é anual e protege contra os tipos mais comuns do vírus da gripe. É essencial para crianças a partir dos 6 meses para prevenir complicações."
             },
             {
                 name: "Febre Amarela - 1ª Dose",
@@ -434,16 +441,34 @@
                 description: "A vacina da Febre Amarela é recomendada para crianças que vivem ou viajarão para áreas de risco. Protege contra a doença transmitida por mosquitos. A primeira dose é dada aos 9 meses."
             },
             {
-                name: "Febre Amarela - Reforço",
-                recommendedAge: "4 anos",
+                name: "Pneumocócica 10-valente - Reforço",
+                recommendedAge: "12 meses",
                 maxAge: "Até 4 anos, 11 meses e 29 dias",
-                description: "O reforço da vacina de Febre Amarela, aos 4 anos, assegura que a criança mantenha a imunidade contra a doença em áreas endêmicas."
+                description: "O reforço da Pneumocócica, geralmente aos 12 meses, garante uma proteção contínua e eficaz contra as doenças causadas pelo pneumococo."
+            },
+            {
+                name: "Meningocócica C - conjugada - Reforço",
+                recommendedAge: "12 meses",
+                maxAge: "Até 4 anos, 11 meses e 29 dias",
+                description: "O reforço da Meningocócica C garante a continuidade da proteção contra a doença invasiva, que pode ser muito grave em crianças pequenas."
             },
             {
                 name: "Tríplice Viral (SCR) - 1ª Dose",
                 recommendedAge: "12 meses",
                 maxAge: "", // No max age in PDF
                 description: "A Tríplice Viral protege contra sarampo, caxumba e rubéola. É uma vacina vital para a saúde pública e individual, aplicada em dose única por volta dos 12 meses de idade."
+            },
+            {
+                name: "Poliomielite 1, 2, 3 (VIP) - Reforço",
+                recommendedAge: "15 meses",
+                maxAge: "Até 4 anos, 11 meses e 29 dias",
+                description: "O primeiro reforço da VIP aumenta ainda mais a proteção contra a poliomielite, garantindo que a imunidade se mantenha forte ao longo do tempo."
+            },
+            {
+                name: "DTP - 1º Reforço",
+                recommendedAge: "15 meses",
+                maxAge: "Até 6 anos, 11 meses e 29 dias",
+                description: "O primeiro reforço da DTP (difteria, tétano e coqueluche) é importante para manter a imunidade alta contra essas doenças, especialmente a coqueluche, que é perigosa para bebês."
             },
             {
                 name: "Tetra Viral (SCRV) - Dose Única",
@@ -458,10 +483,28 @@
                 description: "A vacina contra Hepatite A protege contra a infecção do fígado causada pelo vírus da hepatite A, que é transmitido por água e alimentos contaminados. Dose única recomendada aos 15 meses."
             },
             {
+                name: "DTP - 2º Reforço",
+                recommendedAge: "4 anos",
+                maxAge: "Até 6 anos, 11 meses e 29 dias",
+                description: "O segundo reforço da DTP, administrado por volta dos 4 anos, garante uma proteção duradoura contra difteria, tétano e coqueluche antes da entrada na escola."
+            },
+            {
+                name: "Febre Amarela - Reforço",
+                recommendedAge: "4 anos",
+                maxAge: "Até 4 anos, 11 meses e 29 dias",
+                description: "O reforço da vacina de Febre Amarela, aos 4 anos, assegura que a criança mantenha a imunidade contra a doença em áreas endêmicas."
+            },
+            {
                 name: "Varicela - Dose Única",
                 recommendedAge: "4 anos",
                 maxAge: "Até 6 anos, 11 meses e 29 dias",
                 description: "A vacina de Varicela (catapora) protege contra a doença. Se a criança já tomou a Tetra Viral, esta dose pode não ser necessária, dependendo do esquema."
+            },
+            {
+                name: "Covid-19 - (Consultar Esquema)",
+                recommendedAge: "6 meses a 4 anos",
+                maxAge: "4 anos 11 meses e 29 dias",
+                description: "A vacina Covid-19 para crianças ajuda a prevenir formas graves da doença. O esquema de doses pode variar, por isso, é fundamental consultar o posto de saúde."
             },
             {
                 name: "HPV - 1ª Dose",
@@ -474,20 +517,8 @@
                 recommendedAge: "11 a 14 anos",
                 maxAge: "14 anos, 11 meses e 29 dias",
                 description: "A vacina Meningo ACWY protege contra diferentes tipos de meningite bacteriana. É uma dose única importante para adolescentes."
-            },
-            {
-                name: "Covid-19 - (Consultar Esquema)",
-                recommendedAge: "6 meses a 4 anos",
-                maxAge: "4 anos 11 meses e 29 dias",
-                description: "A vacina Covid-19 para crianças ajuda a prevenir formas graves da doença. O esquema de doses pode variar, por isso, é fundamental consultar o posto de saúde."
-            },
-            {
-                name: "Influenza",
-                recommendedAge: "A partir de 6 meses de idade (Anual)",
-                maxAge: "", // No max age in PDF
-                description: "A vacina contra a Influenza (gripe) é anual e protege contra os tipos mais comuns do vírus da gripe. É essencial para crianças a partir dos 6 meses para prevenir complicações."
             }
-        ];
+        ].sort((a, b) => convertAgeToDays(a.recommendedAge) - convertAgeToDays(b.recommendedAge)); // Ordena aqui!
 
         // Mapeia os elementos do DOM
         const birthDateInput = document.getElementById('birthDate');

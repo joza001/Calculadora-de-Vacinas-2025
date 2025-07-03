@@ -441,6 +441,12 @@
                 description: "A vacina da Febre Amarela é recomendada para crianças que vivem ou viajarão para áreas de risco. Protege contra a doença transmitida por mosquitos. A primeira dose é dada aos 9 meses."
             },
             {
+                name: "Meningo ACWY - Dose Única", // Nova entrada para 12 meses
+                recommendedAge: "12 meses",
+                maxAge: "Até 4 anos, 11 meses e 29 dias",
+                description: "A vacina Meningo ACWY, agora disponível para crianças a partir dos 12 meses no SUS, protege contra os principais tipos de meningite bacteriana (A, C, W e Y), oferecendo uma proteção ampliada."
+            },
+            {
                 name: "Pneumocócica 10-valente - Reforço",
                 recommendedAge: "12 meses",
                 maxAge: "Até 4 anos, 11 meses e 29 dias",
@@ -513,10 +519,10 @@
                 description: "A vacina HPV protege contra o Papilomavírus Humano, que pode causar câncer de colo de útero e outras lesões. É recomendada para adolescentes e aplicada em duas doses."
             },
             {
-                name: "Meningo ACWY - Dose Única",
+                name: "Meningo ACWY - Dose Única", // Mantida para a faixa etária original (adolescentes)
                 recommendedAge: "11 a 14 anos",
                 maxAge: "14 anos, 11 meses e 29 dias",
-                description: "A vacina Meningo ACWY protege contra diferentes tipos de meningite bacteriana. É uma dose única importante para adolescentes."
+                description: "A vacina Meningo ACWY protege adolescentes contra diferentes tipos de meningite bacteriana (A, C, W e Y), sendo uma dose única importante para esta faixa etária."
             }
         ].sort((a, b) => convertAgeToDays(a.recommendedAge) - convertAgeToDays(b.recommendedAge)); // Ordena aqui!
 
